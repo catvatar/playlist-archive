@@ -1,3 +1,4 @@
+// import { printYoutubeVideo } from "./youtubeAPI";
 // input: source: string
 // output: {title: string, artist: string, album: string, year: string, genre: string[], tags: string[], sources: string[]} | {}
 export default async function loadMedia(url: string) {
@@ -9,15 +10,8 @@ export default async function loadMedia(url: string) {
   }
   const urlObject = new URL(url);
   const source = urlObject.hostname;
-  switch (source) {
-    case "www.youtube.com":
-      return {};
-    case "youtu.be":
-      return {};
-    case "open.spotify.com":
-      return {};
-    default:
-      console.error("Load Media: Unsupported source.");
-      return {};
-  }
+  // if (source === "www.youtube.com" || source === "www.youtu.be") {
+  //   return youtubeInterface(urlObject);
+  // }
+  return {};
 }
