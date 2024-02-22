@@ -10,6 +10,14 @@ export default async function loadMedia(url: string) {
   }
   const urlObject = new URL(url);
   const source = urlObject.hostname;
-  console.log(invoke("get_video_from_youtube_by_id", { id: "123" }));
+  const id = idFromYouTube(url);
+  const response = await invoke("get_video_from_youtube_by_id", { source, id });
+  if (response) {
+    return response;
+  }
   return {};
+}
+function idFromYouTube(url: string) {
+  const urlObject = new URL(url);
+  return urlObject.searchParams.get("v");
 }
