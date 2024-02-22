@@ -2,7 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::AppHandle;
-use youtube_api::{YoutubeApi, auth::stdio_login};
+use youtube_api::YoutubeApi;
 
 fn main() {
   tauri::Builder::default()
@@ -17,10 +17,12 @@ fn main() {
 
 #[tauri::command]
 async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<String,String>{
-  let _add_data_dir = app.path_resolver().app_data_dir().unwrap();
+  let app_data_dir: std::path::PathBuf = app.path_resolver().app_data_dir().unwrap();
+  let api_key_dir: std::path::PathBuf = app_data_dir.join("api_key.txt");
+  let _api_key: String = std::fs::read_to_string(api_key_dir).unwrap();
 
-  let api = YoutubeApi::new_with_oauth("", String::new(), String::new(), None).unwrap();
-  api.login(stdio_login).await.unwrap();
+  let _api: YoutubeApi = YoutubeApi::new_with_oauth("", String::new(), String::new(), None).unwrap();
+  // api.login(stdio_login).await.unwrap();
   _ = id;
   Err("This failed".into())
 }
