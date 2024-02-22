@@ -1,4 +1,4 @@
-// import { printYoutubeVideo } from "./youtubeAPI";
+import { invoke } from "@tauri-apps/api/tauri";
 // input: source: string
 // output: {title: string, artist: string, album: string, year: string, genre: string[], tags: string[], sources: string[]} | {}
 export default async function loadMedia(url: string) {
@@ -10,8 +10,6 @@ export default async function loadMedia(url: string) {
   }
   const urlObject = new URL(url);
   const source = urlObject.hostname;
-  // if (source === "www.youtube.com" || source === "www.youtu.be") {
-  //   return youtubeInterface(urlObject);
-  // }
+  console.log(invoke("get_video_from_youtube_by_id", { id: "123" }));
   return {};
 }

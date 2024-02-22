@@ -7,7 +7,6 @@ import "react-json-view-lite/dist/index.css";
 export default function About() {
   const [data, setData] = useState({});
   const [url, setUrl] = useState("");
-  // const media = loadMedia(url).then((res) => setData(res));
 
   return (
     <>
@@ -19,7 +18,7 @@ export default function About() {
         className="py-4"
         onSubmit={(e) => {
           e.preventDefault();
-          // loadMedia(url).then((data) => setData(data));
+          loadMedia(url).then((data) => setData(data));
         }}
       >
         <input
