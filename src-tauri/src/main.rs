@@ -28,8 +28,8 @@ async fn list_video_by_id(api_key: String, id: String) -> Result<reqwest::Respon
 
 #[tauri::command]
 async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<String,String>{
+  // authenticate the user
   let app_data_dir: std::path::PathBuf = app.path_resolver().app_data_dir().unwrap();
-  
   let api_key_result: Result<String, std::io::Error> = youtube_api_key(app_data_dir.clone());
   let api_key: String = match api_key_result {
     Ok(key) => key,
@@ -38,8 +38,9 @@ async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<Strin
     }
   };
 
-  let list_video_result:  Result<reqwest::Response,reqwest::Error> = list_video_by_id(api_key, id).await;
-  match list_video_result {
+  //fetch raw video data
+  let raw_video_data_result:  Result<reqwest::Response,reqwest::Error> = list_video_by_id(api_key, id).await;
+  match raw_video_data_result {
     Ok(response) => {
       let video: String = response.text().await.unwrap();
       Ok(video)
