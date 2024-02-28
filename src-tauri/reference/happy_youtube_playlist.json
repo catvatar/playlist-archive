@@ -1,0 +1,236 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "etag": "q47SBpwmEHEt4nhfqHR0zgrgKmI",
+  "nextPageToken": "EAAajQFQVDpDQVVpRURZeE1qZzJOelpDTXpWR05UVXlPVVlvQVVpSTY3My1uclg5QWxBQldrUWlRMmxLVVZSRmMzZFVNMVp3VmpJNVQyUlZPV3RoUmxrelpFWnNkbE5YU2xKaFZrWkdWMnRGZWxKNlRYZFdWWGgwUldkelNYTmphbmh1ZDFsUmQwOU1jRlpuSWc",
+  "items": [
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "9iCQl57AgJonlheCep4RUu4srhA",
+      "id": "UExLME91aVdvTnVPZGhWN3RZb0liUWlRRVpBM0czMFVMbS4wMTcyMDhGQUE4NTIzM0Y5",
+      "snippet": {
+        "publishedAt": "2017-06-18T11:41:39Z",
+        "channelId": "UCvbj1fn0PFZ1n9QrlmT6wDA",
+        "title": "Attack on Titan Season 2 - Official Opening Song - Shinzou wo Sasageyo by Linked Horizon",
+        "description": "Subscribe to Funimation's YouTube Channel for all your anime downunder https://weareani.me/sjvgdsAttack on Titan Season 2 OP - “Shinzou wo Sasageyo”\n\nPerformed by: Linked Horizon\nLyrics by: Revo\nMusic by: Revo\nArrangement by: Revo (Pony Canyon)\n\nSubscribe to our channel for all the latest updates & videos!\n\nWebsite: http://www.animelab.com\nLike us on Facebook: http://www.facebook.com/animelab\nFollow us on Twitter: http://www.twitter.com/animelab\n\n© 2014 AnimeLab",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/CID-sYQNCew/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/CID-sYQNCew/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/CID-sYQNCew/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/CID-sYQNCew/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/CID-sYQNCew/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "catvatar",
+        "playlistId": "PLK0OuiWoNuOdhV7tYoIbQiQEZA3G30ULm",
+        "position": 0,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "CID-sYQNCew"
+        },
+        "videoOwnerChannelTitle": "animelab",
+        "videoOwnerChannelId": "UCWt3xWeVSCnVPZFdhcjFsUQ"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "UtrQo5UUq3BKKjnX2c9KFNUZzhM",
+      "id": "UExLME91aVdvTnVPZGhWN3RZb0liUWlRRVpBM0czMFVMbS41NkI0NEY2RDEwNTU3Q0M2",
+      "snippet": {
+        "publishedAt": "2017-06-18T11:40:03Z",
+        "channelId": "UCvbj1fn0PFZ1n9QrlmT6wDA",
+        "title": "LiSA - Crossing Field",
+        "description": "Music video by LiSA performing Crossing Field. (C) 2012 Aniplex Inc.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/KId6eunoiWk/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/KId6eunoiWk/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/KId6eunoiWk/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/KId6eunoiWk/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/KId6eunoiWk/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "catvatar",
+        "playlistId": "PLK0OuiWoNuOdhV7tYoIbQiQEZA3G30ULm",
+        "position": 1,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "KId6eunoiWk"
+        },
+        "videoOwnerChannelTitle": "lxixsxaVEVO",
+        "videoOwnerChannelId": "UCm9XuXWofRSxSqX3imN0q9A"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "INGF7dPJ7czuvji0NAfATfJ0suo",
+      "id": "UExLME91aVdvTnVPZGhWN3RZb0liUWlRRVpBM0czMFVMbS4wRjhFM0MxMTU1MEUzQ0VB",
+      "snippet": {
+        "publishedAt": "2018-05-15T22:25:43Z",
+        "channelId": "UCvbj1fn0PFZ1n9QrlmT6wDA",
+        "title": "My Hero Academia Season 3 - Opening | ODD FUTURE",
+        "description": "Artist: UVERworld\nSong: ODD FUTURE\nWatch My Hero Academia on Crunchyroll! https://got.cr/cd-mhaop\n\nCrunchyroll Dubs brings you the latest clips, full episodes, and more from your favorite anime - all dubbed in English! \n\nFREE 14-DAY CRUNCHYROLL TRIAL 🌟 https://got.cr/cd-14daysop\n\n#MyHeroAcademia #UVERworld #ODDFUTURE",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/v1YojYU5nPQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/v1YojYU5nPQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/v1YojYU5nPQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/v1YojYU5nPQ/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          },
+          "maxres": {
+            "url": "https://i.ytimg.com/vi/v1YojYU5nPQ/maxresdefault.jpg",
+            "width": 1280,
+            "height": 720
+          }
+        },
+        "channelTitle": "catvatar",
+        "playlistId": "PLK0OuiWoNuOdhV7tYoIbQiQEZA3G30ULm",
+        "position": 2,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "v1YojYU5nPQ"
+        },
+        "videoOwnerChannelTitle": "Crunchyroll Dubs",
+        "videoOwnerChannelId": "UCVi2lI40LetxLBKn-rtWC3A"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "SXZjfyX_C0fH9PylDkNso4U8iao",
+      "id": "UExLME91aVdvTnVPZGhWN3RZb0liUWlRRVpBM0czMFVMbS44QzVGQUU2QjE2NDgxM0M4",
+      "snippet": {
+        "publishedAt": "2017-09-03T13:21:24Z",
+        "channelId": "UCvbj1fn0PFZ1n9QrlmT6wDA",
+        "title": "Noragami Aragoto - Official Opening - Kyouran Hey Kids!!",
+        "description": "Subscribe to Funimation's YouTube Channel for all your anime downunder https://weareani.me/sjvgdsNoragami Aragoto - Official Opening\n \nKyōran Hey Kids!! by The Oral Cigarettes\n\nSubscribe to our channel for all the latest updates & videos!\n\nWebsite: http://www.animelab.com\nLike us on Facebook: http://www.facebook.com/animelab\nFollow us on Twitter: http://www.twitter.com/animelab\n\n© 2015 AnimeLab",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/aZenmeRytEM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/aZenmeRytEM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/aZenmeRytEM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/aZenmeRytEM/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          }
+        },
+        "channelTitle": "catvatar",
+        "playlistId": "PLK0OuiWoNuOdhV7tYoIbQiQEZA3G30ULm",
+        "position": 3,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "aZenmeRytEM"
+        },
+        "videoOwnerChannelTitle": "animelab",
+        "videoOwnerChannelId": "UCWt3xWeVSCnVPZFdhcjFsUQ"
+      }
+    },
+    {
+      "kind": "youtube#playlistItem",
+      "etag": "AluyjXowhx-3GhToCgHHiLYv_Hg",
+      "id": "UExLME91aVdvTnVPZGhWN3RZb0liUWlRRVpBM0czMFVMbS5CQkEwRDA0MDkwNUM2MDY1",
+      "snippet": {
+        "publishedAt": "2017-11-10T15:48:40Z",
+        "channelId": "UCvbj1fn0PFZ1n9QrlmT6wDA",
+        "title": "My Hero Academia - Official Opening",
+        "description": "Subscribe to Funimation's YouTube Channel for all your anime downunder https://weareani.me/sjvgdsDeku has dreamt of being a hero his whole life—a lofty goal for anyone, but especially challenging for a kid with no superpowers. That’s not going to stop him from enrolling in one of the world’s most prestigious hero academies.\n\nJoin the ultimate class of heroes every Sunday night on AnimeLab! 💪 - http://mad.mn/myheroa\n\nSubscribe to our channel for all the latest updates & videos!\n\nWebsite: http://www.animelab.com\nLike us on Facebook: http://www.facebook.com/animelab\nFollow us on Twitter: http://www.twitter.com/animelab\n\n© 2015 AnimeLab",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-77UEct0cZM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-77UEct0cZM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-77UEct0cZM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          },
+          "standard": {
+            "url": "https://i.ytimg.com/vi/-77UEct0cZM/sddefault.jpg",
+            "width": 640,
+            "height": 480
+          }
+        },
+        "channelTitle": "catvatar",
+        "playlistId": "PLK0OuiWoNuOdhV7tYoIbQiQEZA3G30ULm",
+        "position": 4,
+        "resourceId": {
+          "kind": "youtube#video",
+          "videoId": "-77UEct0cZM"
+        },
+        "videoOwnerChannelTitle": "animelab",
+        "videoOwnerChannelId": "UCWt3xWeVSCnVPZFdhcjFsUQ"
+      }
+    }
+  ],
+  "pageInfo": {
+    "totalResults": 41,
+    "resultsPerPage": 5
+  }
+}

@@ -9,6 +9,7 @@ pub struct VideoListResponse {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 struct Video {
     kind: String,
     etag: String,
@@ -19,6 +20,7 @@ struct Video {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 struct Snippet {
     published_at: String,
     channel_id: String,
@@ -53,6 +55,7 @@ struct Localized {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 struct ContentDetails {
     duration: String,
     dimension: String,
