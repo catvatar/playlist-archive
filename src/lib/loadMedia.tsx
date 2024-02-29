@@ -12,28 +12,41 @@ export default async function loadMedia(
   // matching hostname to source
   const source = urlObject.hostname;
   if (forcedSource === "YouTube" || hostIsYouTube(source)) {
-    const params = urlObject.searchParams;
-
-    if (params.has("v")) {
-      const id = params.get("v");
-      const response = await invoke("get_video_from_youtube_by_id", { id });
-      return "Success, YouTube, video";
-    }
-
-    if (params.has("list")) {
-      const id = params.get("list");
-      const response = await invoke("get_videos_from_youtube_by_playlist_id", {
-        id,
-      });
-      return "Success, YouTube, playlist";
-    }
-
-    return "Error, YouTube, could not find video or playlist id";
+    return handleYoutubeVideo(urlObject);
   }
 
   if (forcedSource === "Spotify" || hostIsSpotify(source)) {
     return "Error, Spotify, not implemented";
   }
+
+  return "Error, ,could not find source";
+}
+
+async function handleYoutubeVideo(url: URL) {
+  const params = url.searchParams;
+  const source = url.hostname;
+
+  if (source === "youtu.be") {
+    const id = url.pathname.substring(1);
+    const response = await invoke("get_video_from_youtube_by_id", { id });
+    console.log(response);
+    return "Success, Youtube, video";
+  }
+  if (params.has("v")) {
+    const id = params.get("v");
+    const response = await invoke("get_video_from_youtube_by_id", { id });
+    console.log(response);
+    return "Success, YouTube, video";
+  }
+  if (params.has("list")) {
+    const id = params.get("list");
+    const response = await invoke("get_videos_from_youtube_by_playlist_id", {
+      id,
+    });
+    console.log(response);
+    return "Success, YouTube, playlist";
+  }
+  return "Error, YouTube, could not find video or playlist id";
 }
 
 function hostIsSpotify(host: string) {
