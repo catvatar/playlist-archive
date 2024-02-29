@@ -4,6 +4,7 @@
 // use youtube_api::YoutubeApi;
 
 pub mod youtube;
+pub mod entry;
 
 fn main() {
   tauri::Builder::default()

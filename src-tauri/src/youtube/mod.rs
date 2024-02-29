@@ -2,6 +2,7 @@ use tauri::AppHandle;
 use reqwest;
 
 pub mod response;
+use crate::entry;
 use response::VideoListResponse;
 
 fn youtube_api_key(app_data_dir : std::path::PathBuf) -> Result<String, std::io::Error> {
@@ -15,7 +16,7 @@ async fn list_video_by_id(api_key: String, id: String) -> Result<VideoListRespon
 }
 
 #[tauri::command]
-pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<VideoListResponse,String>{
+pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<entry::Song,String>{
     // authenticate the user
     let app_data_dir: std::path::PathBuf = app.path_resolver().app_data_dir().unwrap();
     let api_key_result: Result<String, std::io::Error> = self::youtube_api_key(app_data_dir.clone());
@@ -34,9 +35,10 @@ pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<V
             return Err("Rust: ".to_owned() + &e.to_string());
         }
     };
-    println!("{:?}", video_data);
+    let save_entry : entry::Song = video_data.into();
+    println!("{:?}", save_entry);
     
-    Ok(video_data)
+    Ok(save_entry)
 }
 
 async fn list_videos_by_playlist_id(api_key: String, id: String) -> Result<reqwest::Response,reqwest::Error> {

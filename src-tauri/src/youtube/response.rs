@@ -1,4 +1,6 @@
 use serde::{Deserialize, Serialize};
+use crate::entry;
+// use crate::entry::Metadata as EntryMetadata;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct VideoListResponse {
@@ -6,6 +8,34 @@ pub struct VideoListResponse {
     etag: String,
     items: Vec<Video>,
     page_info: Option<PageInfo>,
+}
+
+impl Into<entry::Song> for VideoListResponse {
+    fn into(self) -> entry::Song {
+        let metadata : entry::Metadata = entry::Metadata{
+            title: self.items[0].snippet.title.clone(),
+            author: "catvatar".to_string(),
+            tags: None,
+            date: entry::Date{date: "2021-01-01".to_string(),},
+            thumbnail: None,
+            comment: "Write your comment here.".to_string(),
+        };
+        let song : entry::Song = entry::Song{
+            metadata,
+            artist: self.items[0].snippet.channel_title.clone().into(),
+            genres: None,
+            sources: vec![entry::Source{
+                url: "https://www.youtube.com/watch?v=".to_string() + &self.items[0].id,
+                source: "youtube".to_string(),
+            },].into(),
+        };
+        song
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ErrorResponse {
+    error: Error,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -83,10 +113,6 @@ struct PageInfo {
     results_per_page: i32,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct ErrorResponse {
-    error: Error,
-}
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Error {
