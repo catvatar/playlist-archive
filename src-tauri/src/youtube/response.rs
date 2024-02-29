@@ -5,7 +5,7 @@ pub struct VideoListResponse {
     kind: String,
     etag: String,
     items: Vec<Video>,
-    page_info: PageInfo,
+    page_info: Option<PageInfo>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -15,8 +15,8 @@ struct Video {
     etag: String,
     id: String,
     snippet: Snippet,
-    content_details: ContentDetails,
-    statistics: Statistics,
+    content_details: Option<ContentDetails>,
+    statistics: Option<Statistics>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -28,7 +28,7 @@ struct Snippet {
     description: String,
     thumbnails: Thumbnails,
     channel_title: String,
-    tags: Vec<String>,
+    tags: Option<Vec<String>>,
     category_id: String,
     live_broadcast_content: String,
     localized: Localized,

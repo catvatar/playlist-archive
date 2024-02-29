@@ -15,14 +15,14 @@ async fn list_video_by_id(api_key: String, id: String) -> Result<VideoListRespon
 }
 
 #[tauri::command]
-pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<String,String>{
+pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<VideoListResponse,String>{
     // authenticate the user
     let app_data_dir: std::path::PathBuf = app.path_resolver().app_data_dir().unwrap();
     let api_key_result: Result<String, std::io::Error> = self::youtube_api_key(app_data_dir.clone());
     let api_key: String = match api_key_result {
         Ok(key) => key,
         Err(e) => {
-            return Err(e.to_string());
+            return Err("Rust: ".to_owned() + &e.to_string());
         }
     };
 
@@ -31,12 +31,12 @@ pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<S
     let video_data: VideoListResponse = match video_data_result{
         Ok(response) => response,
         Err(e) => {
-            return Err(e.to_string());
+            return Err("Rust: ".to_owned() + &e.to_string());
         }
     };
     println!("{:?}", video_data);
     
-    Ok("Failed".into())
+    Ok(video_data)
 }
 
 async fn list_videos_by_playlist_id(api_key: String, id: String) -> Result<reqwest::Response,reqwest::Error> {
@@ -52,7 +52,7 @@ pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -
     let api_key: String = match api_key_result {
         Ok(key) => key,
         Err(e) => {
-            return Err(e.to_string());
+            return Err("Rust: ".to_owned() + &e.to_string());
         }
     };
 
@@ -63,7 +63,7 @@ pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -
             Ok(videos)
         },
         Err(e) => {
-            Err(e.to_string())
+            Err("Rust: ".to_owned() + &e.to_string())
         }
     }
 }

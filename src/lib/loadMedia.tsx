@@ -29,13 +29,13 @@ async function handleYoutubeVideo(url: URL) {
   if (source === "youtu.be") {
     const id = url.pathname.substring(1);
     const response = await invoke("get_video_from_youtube_by_id", { id });
-    // console.log(response);
+    console.log(response);
     return "Success, Youtube, video";
   }
   if (params.has("v")) {
     const id = params.get("v");
     const response = await invoke("get_video_from_youtube_by_id", { id });
-    // console.log(response);
+    console.log(response);
     return "Success, YouTube, video";
   }
   if (params.has("list")) {
