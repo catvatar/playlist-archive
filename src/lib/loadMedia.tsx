@@ -5,6 +5,9 @@ export default async function loadMedia(
   url: string,
   forcedSource: string = ""
 ) {
+  // TODO: some serious refactoring
+  // move this to the backend
+
   // creating URL from string
   if (URL.canParse(url) === false) return "Error, ,could not parse URL";
   const urlObject: URL = new URL(url);

@@ -61,10 +61,11 @@ fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Error> {
             }
         }
     };
-    // append the video to the playlist
     saved_songs_playlist.songs = match saved_songs_playlist.songs {
         Some(mut songs) => {
             if songs.contains(&song) {
+                // TODO: update different fields of the song
+                // for example, if song if from a different source, update the sources
                 return Ok(());
             }
             songs.push(song);
@@ -74,7 +75,7 @@ fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Error> {
             Some(vec![song])
         }
     };
-    // update to serialize to toml instead of json
+    // TODO: update to serialize to toml instead of json
     let song_json_result:Result<String, serde_json::Error> = serde_json::to_string(&saved_songs_playlist);
     let song_json = match song_json_result {
         Ok(json) => json,
@@ -89,7 +90,6 @@ fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Error> {
 
 #[tauri::command]
 pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<String,String>{
-    // authenticate the user
     let api_key_result: Result<String, std::io::Error> = self::youtube_api_key(app.clone());
     let api_key: String = match api_key_result {
         Ok(key) => key,
@@ -97,8 +97,6 @@ pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<S
             return Err("Rust: ".to_owned() + &e.to_string());
         }
     };
-
-    //fetch raw video data
     let video_data_result:  Result<VideoListResponse,reqwest::Error> = list_video_by_id(api_key, id).await;
     let video_data: VideoListResponse = match video_data_result{
         Ok(response) => response,
@@ -107,6 +105,9 @@ pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<S
         }
     };
     let song_entry : Song = video_data.into();
+    // TODO: some basic vanity checks on the video data
+    // intent: to reliably detect duplicates from different sources
+    // for example, change "Skinshape - I Didn't Know (Official Video)" to "I Didn't Know" and check if author is "Skinshape"
     save_song_on_disk(app.clone(), song_entry).expect("Rust: Failed to save video on disk.");
     Ok("Rust: Video fetched successfully.".to_string())
 }
@@ -126,6 +127,7 @@ pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -
         }
     };
 
+    // TODO: fetch and parse songs on the playlist
     let list_videos_result:  Result<reqwest::Response,reqwest::Error> = list_videos_by_playlist_id(api_key, id).await;
     match list_videos_result {
         Ok(response) => {
