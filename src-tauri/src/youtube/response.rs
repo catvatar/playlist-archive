@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use crate::entry;
+use chrono;
 // use crate::entry::Metadata as EntryMetadata;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -16,14 +17,14 @@ impl Into<entry::Song> for VideoListResponse {
             title: self.items[0].snippet.title.clone(),
             author: "catvatar".to_string(),
             tags: None,
-            date: entry::Date{date: "2021-01-01".to_string(),},
+            date: chrono::offset::Local::now().date_naive().to_string().into(),
             thumbnail: None,
             comment: "Write your comment here.".to_string(),
         };
         let song : entry::Song = entry::Song{
             metadata,
             artist: self.items[0].snippet.channel_title.clone().into(),
-            genres: None,
+            genres: self.items[0].snippet.tags.clone(),
             sources: vec![entry::Source{
                 url: "https://www.youtube.com/watch?v=".to_string() + &self.items[0].id,
                 source: "youtube".to_string(),
