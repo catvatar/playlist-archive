@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize, Serializer, Deserializer, de};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Tag{
@@ -44,9 +44,15 @@ impl PartialEq for Metadata{
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub enum SourceType{
+    Youtube,
+    Spotify,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Source{
-    pub url: String,
-    pub source: String,
+    pub id: String,
+    pub source: SourceType,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -62,55 +68,11 @@ impl PartialEq for Song{
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum Visibility{
     Visible,
     Hidden,
 }
-
-impl Serialize for Visibility {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        let value = match self {
-            Visibility::Visible => "Visible",
-            Visibility::Hidden => "Hidden",
-        };
-        serializer.serialize_str(value)
-    }
-}
-
-impl<'de> Deserialize<'de> for Visibility {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        struct VisibilityVisitor;
-
-        impl<'de> de::Visitor<'de> for VisibilityVisitor {
-            type Value = Visibility;
-
-            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-                formatter.write_str("either \"Visible\" or \"Hidden\"")
-            }
-
-            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-            where
-                E: de::Error,
-            {
-                match value {
-                    "Visible" => Ok(Visibility::Visible),
-                    "Hidden" => Ok(Visibility::Hidden),
-                    _ => Err(de::Error::unknown_variant(value, &["Visible", "Hidden"])),
-                }
-            }
-        }
-
-        deserializer.deserialize_str(VisibilityVisitor)
-    }
-}
-
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Playlist{

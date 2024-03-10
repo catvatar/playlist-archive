@@ -1,20 +1,30 @@
 use serde::{Deserialize, Serialize};
 use crate::entry;
 use chrono;
-// use crate::entry::Metadata as EntryMetadata;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct VideoListResponse {
     kind: String,
     etag: String,
-    items: Vec<Video>,
+    pub items: Vec<Video>,
     page_info: Option<PageInfo>,
 }
 
-impl Into<entry::Song> for VideoListResponse {
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct Video {
+    kind: String,
+    etag: String,
+    id: String,
+    snippet: Snippet,
+    content_details: Option<ContentDetails>,
+    statistics: Option<Statistics>,
+}
+
+impl Into<entry::Song> for &Video {
     fn into(self) -> entry::Song {
         let metadata : entry::Metadata = entry::Metadata{
-            title: self.items[0].snippet.title.clone(),
+            title: self.snippet.title.clone(),
             author: "catvatar".to_string(),
             tags: None,
             date: chrono::offset::Local::now().date_naive().to_string().into(),
@@ -23,31 +33,15 @@ impl Into<entry::Song> for VideoListResponse {
         };
         let song : entry::Song = entry::Song{
             metadata,
-            artist: self.items[0].snippet.channel_title.clone().into(),
-            genres: self.items[0].snippet.tags.clone(),
+            artist: self.snippet.channel_title.clone().into(),
+            genres: self.snippet.tags.clone(),
             sources: vec![entry::Source{
-                url: "https://www.youtube.com/watch?v=".to_string() + &self.items[0].id,
-                source: "youtube".to_string(),
+                id: self.id.clone(),
+                source: entry::SourceType::Youtube,
             },].into(),
         };
         song
     }
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct ErrorResponse {
-    error: Error,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
-struct Video {
-    kind: String,
-    etag: String,
-    id: String,
-    snippet: Snippet,
-    content_details: Option<ContentDetails>,
-    statistics: Option<Statistics>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -112,35 +106,4 @@ struct Statistics {
 struct PageInfo {
     total_results: i32,
     results_per_page: i32,
-}
-
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Error {
-    code: i32,
-    message: String,
-    errors: Vec<ErrorDetail>,
-    status: String,
-    details: Vec<Detail>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct ErrorDetail {
-    message: String,
-    domain: String,
-    reason: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Detail {
-    #[serde(rename = "@type")]
-    type_: String,
-    reason: String,
-    domain: String,
-    metadata: Metadata,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Metadata {
-    service: String,
 }

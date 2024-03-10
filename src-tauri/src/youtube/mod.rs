@@ -1,9 +1,9 @@
 use tauri::AppHandle;
 use reqwest;
 
-pub mod response;
+pub mod video_list_response;
 use crate::entry::{self, Song, Playlist, Metadata};
-use response::VideoListResponse;
+use video_list_response::{VideoListResponse, Video};
 use serde_json;
 use std::fs;
 
@@ -104,7 +104,7 @@ pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<S
             return Err("Rust: ".to_owned() + &e.to_string());
         }
     };
-    let song_entry : Song = video_data.into();
+    let song_entry : Song = (&video_data.items[0]).into();
     // TODO: some basic vanity checks on the video data
     // intent: to reliably detect duplicates from different sources
     // for example, change "Skinshape - I Didn't Know (Official Video)" to "I Didn't Know" and check if author is "Skinshape"
@@ -128,6 +128,9 @@ pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -
     };
 
     // TODO: fetch and parse songs on the playlist
+    // I will need to requests to the youtube api
+    // 1. to get the playlist data
+    // 2. to get the list of videos on the playlist
     let list_videos_result:  Result<reqwest::Response,reqwest::Error> = list_videos_by_playlist_id(api_key, id).await;
     match list_videos_result {
         Ok(response) => {
