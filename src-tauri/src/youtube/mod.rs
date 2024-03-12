@@ -2,20 +2,20 @@ use tauri::AppHandle;
 use reqwest;
 
 pub mod video_list_response;
+
+pub mod auth;
+
+pub mod error_type;
+use error_type::YouTubeError;
+
 use crate::entry::{self, Song, Playlist, Metadata};
-use video_list_response::{VideoListResponse, Video};
+use video_list_response::VideoListResponse;
 use serde_json;
 use std::fs;
 
-fn youtube_api_key(app : AppHandle) -> Result<String, std::io::Error> {
-    let app_data_dir: std::path::PathBuf = app.path_resolver().app_data_dir().unwrap();
 
-    let api_key_dir: std::path::PathBuf = app_data_dir.join("api_key.txt");
-    std::fs::read_to_string(api_key_dir)
-}
-
-async fn list_video_by_id(api_key: String, id: String) -> Result<VideoListResponse,reqwest::Error> {
-    let url: &String = &format!("https://www.googleapis.com/youtube/v3/videos?part=snippet&id={}&key={}", id, api_key);
+async fn list_video_by_id(authenticator: String, id: String) -> Result<VideoListResponse,reqwest::Error> {
+    let url: &String = &format!("https://www.googleapis.com/youtube/v3/videos?part=snippet&id={}&key={}", id, authenticator);
     Ok(reqwest::get(url).await?.json::<VideoListResponse>().await?)
 }
 
@@ -36,6 +36,22 @@ fn get_playlist_from_disk(app: AppHandle, playlist_name: String) -> Result<Playl
     };
     Ok(playlist)
 }
+
+fn create_saved_songs_playlist() -> Playlist {
+    let metadata : Metadata = Metadata{
+        title: "saved_songs".to_string(),
+        author: "catvatar".to_string(),
+        tags: None,
+        date: chrono::offset::Local::now().date_naive().to_string().into(),
+        thumbnail: None,
+        comment: "Write your comment here.".to_string(),
+    };
+    Playlist{
+        metadata,
+        visibility: entry::Visibility::Visible,
+        songs: None,
+    }
+}
  
 fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Error> {
     let mut saved_songs_playlist: Playlist = match get_playlist_from_disk(app.clone(), "saved_songs".to_string()) {
@@ -43,19 +59,7 @@ fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Error> {
         Err(e) => {
             match e.kind() {
                 std::io::ErrorKind::NotFound => {
-                    let metadata : Metadata = Metadata{
-                        title: "saved_songs".to_string(),
-                        author: "catvatar".to_string(),
-                        tags: None,
-                        date: chrono::offset::Local::now().date_naive().to_string().into(),
-                        thumbnail: None,
-                        comment: "Write your comment here.".to_string(),
-                    };
-                    Playlist{
-                        metadata,
-                        visibility: entry::Visibility::Visible,
-                        songs: None,
-                    }
+                    create_saved_songs_playlist()
                 },
                 _ => {return Err(e);}
             }
@@ -76,11 +80,9 @@ fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Error> {
         }
     };
     // TODO: update to serialize to toml instead of json
-    let song_json_result:Result<String, serde_json::Error> = serde_json::to_string(&saved_songs_playlist);
-    let song_json = match song_json_result {
+    let song_json = match serde_json::to_string(&saved_songs_playlist) {
         Ok(json) => json,
         Err(e) => {
-            println!("Rust: Failed to convert song to json. {:?}", e);
             return Err(std::io::Error::new(std::io::ErrorKind::Other, e.to_string()));
         }
     };
@@ -89,26 +91,18 @@ fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Error> {
 }
 
 #[tauri::command]
-pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<String,String>{
-    let api_key_result: Result<String, std::io::Error> = self::youtube_api_key(app.clone());
-    let api_key: String = match api_key_result {
-        Ok(key) => key,
-        Err(e) => {
-            return Err("Rust: ".to_owned() + &e.to_string());
-        }
-    };
-    let video_data_result:  Result<VideoListResponse,reqwest::Error> = list_video_by_id(api_key, id).await;
-    let video_data: VideoListResponse = match video_data_result{
-        Ok(response) => response,
-        Err(e) => {
-            return Err("Rust: ".to_owned() + &e.to_string());
-        }
-    };
+pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<String,YouTubeError>{  
+    let api_key: String = auth::authenticate(app.clone())?;
+
+    let video_data: VideoListResponse = list_video_by_id(id,api_key).await?;
+
     let song_entry : Song = (&video_data.items[0]).into();
+
     // TODO: some basic vanity checks on the video data
     // intent: to reliably detect duplicates from different sources
     // for example, change "Skinshape - I Didn't Know (Official Video)" to "I Didn't Know" and check if author is "Skinshape"
-    save_song_on_disk(app.clone(), song_entry).expect("Rust: Failed to save video on disk.");
+    save_song_on_disk(app.clone(), song_entry)?;
+
     Ok("Rust: Video fetched successfully.".to_string())
 }
 
@@ -118,14 +112,8 @@ async fn list_videos_by_playlist_id(api_key: String, id: String) -> Result<reqwe
 }
 
 #[tauri::command]
-pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -> Result<String, String> {  
-    let api_key_result: Result<String, std::io::Error> = youtube_api_key(app.clone());
-    let api_key: String = match api_key_result {
-        Ok(key) => key,
-        Err(e) => {
-            return Err("Rust: ".to_owned() + &e.to_string());
-        }
-    };
+pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -> Result<String, YouTubeError> {  
+    let api_key: String = auth::authenticate(app.clone())?;
 
     // TODO: fetch and parse songs on the playlist
     // I will need to requests to the youtube api
@@ -138,7 +126,7 @@ pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -
             Ok(videos)
         },
         Err(e) => {
-            Err("Rust: ".to_owned() + &e.to_string())
+            Err(e.into())
         }
     }
 }
