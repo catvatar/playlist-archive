@@ -164,9 +164,6 @@ pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -
         songs: Some(songs),
         ..playlist
     };
+    // TODO: save playlist to disk
     Ok("Rust: Playlist fetched successfully.".to_string())
-    // TODO: fetch and parse songs on the playlist
-    // I will need two requests to the youtube api
-    // 1. to get the playlist data
-    // 2. to get the list of videos on the playlist
 }
