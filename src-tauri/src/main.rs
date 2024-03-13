@@ -5,6 +5,7 @@
 
 pub mod youtube;
 pub mod entry;
+pub mod io_interface;
 
 fn main() {
   tauri::Builder::default()
