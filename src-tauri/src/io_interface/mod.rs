@@ -50,6 +50,7 @@ pub fn save_playlist_on_disk(save_path: std::path::PathBuf, playlist: &Playlist)
     Ok(())
 }
 
+
 pub fn save_playlist_on_disk_by_name(app: AppHandle, playlist_name: String, playlist: &Playlist) -> Result<(), std::io::Error> {
     let playlist_directory: std::path::PathBuf = playlist_save_directory(app).join(playlist_name.to_owned() + ".json");
     save_playlist_on_disk(playlist_directory, playlist)?;
@@ -83,5 +84,17 @@ pub fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Erro
         }
     };
     save_playlist_on_disk_by_name(app, "saved_songs".to_owned(), &saved_songs_playlist)?;
+    Ok(())
+}
+
+pub fn save_songs_from_playlist(app: AppHandle, playlist: Playlist) -> Result<(), std::io::Error> {
+    match playlist.songs {
+        Some(songs) => {
+            for song in songs {
+                save_song_on_disk(app.clone(), song)?;
+            }
+        },
+        None => (),
+    }
     Ok(())
 }

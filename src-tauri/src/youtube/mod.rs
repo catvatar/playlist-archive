@@ -15,7 +15,7 @@ use error_type::YouTubeError;
 
 use crate::entry::{Song, Playlist};
 
-use crate::io_interface::{save_song_on_disk, save_playlist_on_disk_by_name};
+use crate::io_interface::{save_song_on_disk, save_playlist_on_disk_by_name, save_songs_from_playlist};
 
 pub mod auth;
 
@@ -69,7 +69,13 @@ async fn get_all_videos_by_playlist_id(id: &String, authenticator: &String) -> R
         }
         let response: PlaylistItemsResponse = get_videos_by_playlist_id(id, authenticator, next_page_token.as_ref()).await?;
         for item in response.items {
-            songs.push((&item).into());
+            let song : Song = (&item).into();
+            match song.artist {
+                Some(_) => {
+                    songs.push((&item).into());
+                },
+                None => (),
+            }
         }
         next_page_token = match response.next_page_token {
             Some(token) => Some(token),
@@ -92,6 +98,7 @@ pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -
     };
 
     save_playlist_on_disk_by_name(app.clone(), playlist_with_songs.metadata.title.clone(), &playlist_with_songs)?;
+    save_songs_from_playlist(app, playlist_with_songs)?;
     
     Ok("Rust: Playlist fetched successfully.".to_string())
 }
