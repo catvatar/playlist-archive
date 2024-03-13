@@ -1,21 +1,30 @@
 use tauri::AppHandle;
 use reqwest;
+use serde_json;
+use std::fs;
 
-pub mod video_list_response;
+mod video_list_response;
+use video_list_response::VideoListResponse;
 
-pub mod auth;
+mod playlist_responses;
+use playlist_responses::PlaylistListResponse;
+
+mod playlist_items_response;
+use playlist_items_response::PlaylistItemsResponse;
 
 pub mod error_type;
 use error_type::YouTubeError;
 
 use crate::entry::{self, Song, Playlist, Metadata};
-use video_list_response::VideoListResponse;
-use serde_json;
-use std::fs;
+
+pub mod auth;
 
 
-async fn list_video_by_id(authenticator: String, id: String) -> Result<VideoListResponse,reqwest::Error> {
+
+async fn get_video_by_id(id: &String, authenticator: &String) -> Result<VideoListResponse,reqwest::Error> {
     let url: &String = &format!("https://www.googleapis.com/youtube/v3/videos?part=snippet&id={}&key={}", id, authenticator);
+    // TODO: handle errors
+    // intent: api can return 400 and response should be parsed to ErrorResponse
     Ok(reqwest::get(url).await?.json::<VideoListResponse>().await?)
 }
 
@@ -94,10 +103,10 @@ fn save_song_on_disk(app: AppHandle, song: Song) -> Result<(), std::io::Error> {
 pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<String,YouTubeError>{  
     let api_key: String = auth::authenticate(app.clone())?;
 
-    let video_data: VideoListResponse = list_video_by_id(id,api_key).await?;
-
+    let video_data: VideoListResponse = get_video_by_id(&id, &api_key).await?;
+    
     let song_entry : Song = (&video_data.items[0]).into();
-
+    
     // TODO: some basic vanity checks on the video data
     // intent: to reliably detect duplicates from different sources
     // for example, change "Skinshape - I Didn't Know (Official Video)" to "I Didn't Know" and check if author is "Skinshape"
@@ -106,27 +115,58 @@ pub async fn get_video_from_youtube_by_id(app: AppHandle,id: String) -> Result<S
     Ok("Rust: Video fetched successfully.".to_string())
 }
 
-async fn list_videos_by_playlist_id(api_key: String, id: String) -> Result<reqwest::Response,reqwest::Error> {
-    let url: &String = &format!("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={}&key={}", id, api_key);
-    reqwest::get(url).await
+async fn get_playlist_by_id(id: &String, authenticator: &String) -> Result<PlaylistListResponse,reqwest::Error> {
+    let url: &String = &format!("https://www.googleapis.com/youtube/v3/playlists?part=snippet&id={}&key={}", id, authenticator);
+    Ok(reqwest::get(url).await?.json::<PlaylistListResponse>().await?)
+}
+
+async fn get_videos_by_playlist_id(id: &String, authenticator: &String, next_page_token: Option<&String>) -> Result<PlaylistItemsResponse,reqwest::Error> {
+    let url: String = match next_page_token {
+        Some(token) => {
+            format!("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId={}&key={}&pageToken={}", id, authenticator, token)
+        },        
+        None => 
+            format!("https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId={}&key={}", id, authenticator)
+    };
+    println!("Rust: fetching url: {}",url);
+    Ok(reqwest::get(url).await?.json::<PlaylistItemsResponse>().await?)
+}
+
+async fn get_all_videos_by_playlist_id(id: &String, authenticator: &String) -> Result<Vec<Song>,reqwest::Error> {
+    let mut songs: Vec<Song> = Vec::new();
+    let mut next_page_token: Option<String> = None;
+    let mut counter: i32 = 0;
+    loop {
+        counter += 1;
+        if counter > 10 {
+            break;
+        }
+        let response: PlaylistItemsResponse = get_videos_by_playlist_id(id, authenticator, next_page_token.as_ref()).await?;
+        for item in response.items {
+            songs.push((&item).into());
+        }
+        next_page_token = match response.next_page_token {
+            Some(token) => Some(token),
+            None => break,
+        };
+    }
+    Ok(songs)
 }
 
 #[tauri::command]
-pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -> Result<String, YouTubeError> {  
+pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -> Result<String, YouTubeError> {
     let api_key: String = auth::authenticate(app.clone())?;
+    let playlist_data : PlaylistListResponse = get_playlist_by_id(&id, &api_key).await?;
+    let playlist : Playlist = (&playlist_data.items[0]).into();
 
+    let songs: Vec<Song> = get_all_videos_by_playlist_id(&id, &api_key).await?;
+    let _playlist_with_songs : Playlist = Playlist{
+        songs: Some(songs),
+        ..playlist
+    };
+    Ok("Rust: Playlist fetched successfully.".to_string())
     // TODO: fetch and parse songs on the playlist
-    // I will need to requests to the youtube api
+    // I will need two requests to the youtube api
     // 1. to get the playlist data
     // 2. to get the list of videos on the playlist
-    let list_videos_result:  Result<reqwest::Response,reqwest::Error> = list_videos_by_playlist_id(api_key, id).await;
-    match list_videos_result {
-        Ok(response) => {
-            let videos: String = response.text().await.unwrap();
-            Ok(videos)
-        },
-        Err(e) => {
-            Err(e.into())
-        }
-    }
 }

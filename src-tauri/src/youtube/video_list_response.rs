@@ -3,6 +3,8 @@ use crate::entry;
 use chrono;
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+
 pub struct VideoListResponse {
     kind: String,
     etag: String,
@@ -95,6 +97,7 @@ struct ContentDetails {
 struct ContentRating {}
 
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 struct Statistics {
     view_count: String,
     like_count: String,

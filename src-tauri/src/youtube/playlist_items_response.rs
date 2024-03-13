@@ -4,17 +4,17 @@ use chrono;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-struct PlaylistResponse {
+pub struct PlaylistItemsResponse {
     kind: String,
     etag: String,
-    next_page_token: String,
-    items: Vec<PlaylistItem>,
+    pub next_page_token: Option<String>,
+    pub items: Vec<PlaylistItem>,
     page_info: PageInfo,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-struct PlaylistItem {
+pub struct PlaylistItem {
     kind: String,
     etag: String,
     id: String,
@@ -56,18 +56,18 @@ struct Snippet {
     playlist_id: String,
     position: u32,
     resource_id: ResourceId,
-    video_owner_channel_title: String,
-    video_owner_channel_id: String,
+    video_owner_channel_title: Option<String>,
+    video_owner_channel_id: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Thumbnails {
-    default: Thumbnail,
-    medium: Thumbnail,
-    high: Thumbnail,
-    standard: Thumbnail,
-    maxres: Thumbnail,
+    default: Option<Thumbnail>,
+    medium: Option<Thumbnail>,
+    high: Option<Thumbnail>,
+    standard: Option<Thumbnail>,
+    maxres: Option<Thumbnail>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

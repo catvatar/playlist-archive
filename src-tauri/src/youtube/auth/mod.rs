@@ -8,5 +8,6 @@ fn youtube_api_key(app : AppHandle) -> Result<String, std::io::Error> {
 }
 
 pub fn authenticate(app : AppHandle) -> Result<String, std::io::Error> {
-    youtube_api_key(app)
+    let api_key : String = youtube_api_key(app)?;
+    Ok(api_key)
 }

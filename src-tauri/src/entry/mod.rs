@@ -34,13 +34,29 @@ pub struct Metadata{
     pub author: String,
     pub tags: Option<Vec<Tag>>,
     pub date: Date,
-    pub thumbnail: Option<String>,
+    pub thumbnail: Option<Thumbnails>,
     pub comment: String,
 }
 impl PartialEq for Metadata{
     fn eq(&self, other: &Self) -> bool {
         self.title == other.title
     }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Thumbnails {
+    default: Thumbnail,
+    medium: Thumbnail,
+    high: Thumbnail,
+    standard: Thumbnail,
+    maxres: Thumbnail,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Thumbnail {
+    url: String,
+    width: u32,
+    height: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
