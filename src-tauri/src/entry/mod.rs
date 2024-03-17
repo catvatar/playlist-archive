@@ -59,16 +59,26 @@ struct Thumbnail {
     height: u32,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum SourceType{
-    Youtube,
+    YouTube,
     Spotify,
+    Unknown,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum ImportType{
+    Song,
+    Playlist,
+    Album,
+}
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Source{
     pub id: String,
-    pub source: SourceType,
+    pub import_type: ImportType,
+    pub source_type: SourceType,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

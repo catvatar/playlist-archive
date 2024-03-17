@@ -85,8 +85,7 @@ async fn get_all_videos_by_playlist_id(id: &String, authenticator: &String) -> R
     Ok(songs)
 }
 
-#[tauri::command]
-pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: String) -> Result<String, YouTubeError> {
+pub async fn get_videos_from_youtube_by_playlist_id(app: AppHandle,id: &String) -> Result<String, YouTubeError> {
     let api_key: String = auth::authenticate(app.clone())?;
     let playlist_data : PlaylistListResponse = get_playlist_by_id(&id, &api_key).await?;
     let playlist : Playlist = (&playlist_data.items[0]).into();

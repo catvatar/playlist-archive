@@ -1,5 +1,5 @@
 "use client";
-import loadMedia from "@/src/lib/loadMedia";
+import { invoke } from "@tauri-apps/api/tauri";
 import { useState } from "react";
 import { JsonView, collapseAllNested, darkStyles } from "react-json-view-lite";
 import "react-json-view-lite/dist/index.css";
@@ -18,7 +18,6 @@ export default function About() {
         className="py-4"
         onSubmit={(e) => {
           e.preventDefault();
-          loadMedia(url).then((data) => setData(data));
         }}
       >
         <input

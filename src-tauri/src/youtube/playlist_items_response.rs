@@ -37,7 +37,8 @@ impl Into<entry::Song> for &PlaylistItem {
             genres: None,
             sources: vec![entry::Source{
                 id: self.snippet.resource_id.video_id.clone(),
-                source: entry::SourceType::Youtube,
+                import_type: entry::ImportType::Song,
+                source_type: entry::SourceType::YouTube,
             },].into(),
         };
         song
