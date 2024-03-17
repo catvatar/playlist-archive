@@ -5,6 +5,8 @@ use crate::youtube::error_type::YouTubeError;
 use tauri::AppHandle;
 use crate::entry::{ImportType, SourceType, Source};
 
+
+//TODO needs refactoring
 #[derive(Serialize, Deserialize, Debug)]
 pub struct LoadMediaError {
     pub error: String,
@@ -72,6 +74,7 @@ fn match_type(url: &Url, source: &SourceType) -> ImportType {
 }
 
 fn youtube_extract_id(url: &Url) -> String {
+    // TODO: This is a placeholder !!!!
     if url.host_str().unwrap() == "youtu.be" {
         url.path().to_string().replace("/", "")
     } else {
@@ -173,23 +176,6 @@ pub async fn load_media(app: AppHandle,source_media_url: String, forced_source_t
         })
     };
     result
-//   // matching hostname to source
-//   const source = urlObject.hostname;
-//   if (forcedSource === "YouTube" || hostIsYouTube(source)) {
-//     return handleYoutubeVideo(urlObject);
-//   }
-
-//   if (forcedSource === "Spotify" || hostIsSpotify(source)) {
-//     return "Error, Spotify, not implemented";
-//   }
-
-//   return "Error, ,could not find source";
-// }
-
-// async function handleYoutubeVideo(url: URL) {
-//   const params = url.searchParams;
-//   const source = url.hostname;
-
 //   if (source === "youtu.be") {
 //     const id = url.pathname.substring(1);
 //     const response = await invoke("get_video_from_youtube_by_id", { id });
@@ -211,22 +197,5 @@ pub async fn load_media(app: AppHandle,source_media_url: String, forced_source_t
 //     return "Success, YouTube, playlist";
 //   }
 //   return "Error, YouTube, could not find video or playlist id";
-// }
-
-// function hostIsSpotify(host: string) {
-//   return (
-//     host === "www.spotify.com" ||
-//     host === "spotify.com" ||
-//     host === "open.spotify.com"
-//   );
-// }
-
-// function hostIsYouTube(host: string) {
-//   return (
-//     host === "www.youtube.com" ||
-//     host === "youtube.com" ||
-//     host === "youtu.be" ||
-//     host === "music.youtube.com"
-//   );
 // }
 }
